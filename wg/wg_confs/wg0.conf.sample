@@ -1,0 +1,10 @@
+[Interface]
+PrivateKey =
+Address = 10.0.0.2/24
+PostUp = bash /config/init.sh
+
+[Peer]
+PublicKey =
+Endpoint =
+AllowedIPs = 10.0.0.1/32
+PersistentKeepalive = 25

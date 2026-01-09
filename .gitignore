@@ -1,0 +1,8 @@
+wg/wg_confs/wg0.conf
+wg/coredns/
+wg/templates/
+mc/logs/
+mc/data/plugins/
+mc/data/world
+mc/data/world_nether
+mc/data/world_the_end

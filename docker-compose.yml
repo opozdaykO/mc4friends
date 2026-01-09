@@ -1,0 +1,43 @@
+services:
+  minecraft:
+    build:
+      context: ./mc
+      args:
+        - MC_LINK=https://fill-data.papermc.io/v1/objects/98510e780c3b4397f3bc070f677386dd064c7155e42e7c8fdabc0915e06a1f37/paper-1.21.11-89.jar
+    container_name: mc-container
+    restart: unless-stopped
+    ports:
+      - "25565:25565/tcp"
+      - "25575:25575/tcp"
+    networks:
+      - game_network
+    volumes:
+      - ./mc/data/eula.txt:/app/eula.txt
+      - ./mc/data/server.properties:/app/server.properties
+      - ./mc/data/world/:/app/world/
+      - ./mc/data/world_nether/:/app/world_nether/
+      - ./mc/data/world_the_end/:/app/world_the_end/
+      - ./mc/logs/:/app/logs/
+      - ./mc/data/plugins/:/app/plugins
+
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wg-container
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
+    volumes:
+      - ./wg:/config
+      - /lib/modules:/lib/modules
+    networks:
+      - game_network
+    depends_on:
+      - minecraft
+
+networks:
+  game_network:
+    driver: bridge
